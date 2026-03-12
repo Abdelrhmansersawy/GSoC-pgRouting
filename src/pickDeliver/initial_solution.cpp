@@ -50,20 +50,20 @@ Initial_solution::Initial_solution(
     m_unassigned(number_of_orders),
     m_assigned() {
         invariant();
-        pgassert(kind >= 0 && kind <= OneDepot);
+        pgassert(static_cast<int>(kind) >= 0 && kind <= Initials_code::OneDepot);
 
         switch (kind) {
-            case OneTruck:
+            case Initials_code::OneTruck:
                 one_truck_all_orders();
                 break;
-            case OnePerTruck:
-            case FrontTruck:
-            case BackTruck:
-            case BestInsert:
-            case BestBack:
-            case BestFront:
-            case OneDepot:
-                do_while_foo(kind);
+            case Initials_code::OnePerTruck:
+            case Initials_code::FrontTruck:
+            case Initials_code::BackTruck:
+            case Initials_code::BestInsert:
+            case Initials_code::BestBack:
+            case Initials_code::BestFront:
+            case Initials_code::OneDepot:
+                do_while_foo(static_cast<int>(kind));
                 break;
             default: pgassert(false);
         }
@@ -76,7 +76,7 @@ Initial_solution::Initial_solution(
 void
 Initial_solution::do_while_foo(int kind) {
     invariant();
-    pgassert(kind > 0 && kind <= OneDepot);
+    pgassert(kind > 0 && kind <= static_cast<int>(Initials_code::OneDepot));
 
     Identifiers<size_t> notused;
 

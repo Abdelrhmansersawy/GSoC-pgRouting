@@ -228,7 +228,7 @@ Vehicle_pickDeliver::do_while_feasable(
         auto order = m_orders[current_feasable.front()];
 
         switch (kind) {
-            case OnePerTruck:
+            case Initials_code::OnePerTruck:
                 push_back(order);
                 pgassert(is_feasable());
                 assigned += order.idx();
@@ -236,24 +236,24 @@ Vehicle_pickDeliver::do_while_feasable(
                 invariant();
                 return;
                 break;
-            case FrontTruck:
+            case Initials_code::FrontTruck:
                 push_front(order);
                 break;
-            case BackTruck:
+            case Initials_code::BackTruck:
                 push_back(order);
                 break;
-            case BestInsert:
+            case Initials_code::BestInsert:
                 insert(order);
                 break;
-            case BestBack:
+            case Initials_code::BestBack:
                 order = m_orders[m_orders.find_best_J(current_feasable)];
                 insert(order);
                 break;
-            case BestFront:
+            case Initials_code::BestFront:
                 order = m_orders[m_orders.find_best_I(current_feasable)];
                 insert(order);
                 break;
-            case OneDepot:
+            case Initials_code::OneDepot:
                 semiLIFO(order);
                 break;
             default: pgassert(false);
@@ -268,11 +268,11 @@ Vehicle_pickDeliver::do_while_feasable(
         } else if (has_order(order)) {
             assigned += order.idx();
             unassigned -= order.idx();
-            if (kind == BestBack) {
+            if (kind == Initials_code::BestBack) {
                 current_feasable = m_orders[order.idx()].subsetJ(
                         current_feasable);
             }
-            if (kind == BestFront) {
+            if (kind == Initials_code::BestFront) {
                 current_feasable = m_orders[order.idx()].subsetI(
                         current_feasable);
             }

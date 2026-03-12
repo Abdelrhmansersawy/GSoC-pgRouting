@@ -191,7 +191,7 @@ Optimize::swap_worse(Vehicle_pickDeliver &to, Vehicle_pickDeliver &from) {
             /*
              * insert them in the other truck
              */
-            if (this->get_kind() == OneDepot) {
+            if (this->get_kind() == Initials_code::OneDepot) {
                 from_truck.semiLIFO(to_order);
                 to_truck.semiLIFO(from_order);
             } else {
@@ -331,7 +331,7 @@ Optimize::move_reduce_cost(
          * insert it in the "to" truck
          */
         pgassert(!to_truck.has_order(order));
-        this->get_kind() == OneDepot?
+        this->get_kind() == Initials_code::OneDepot?
             to_truck.semiLIFO(order) :
             to_truck.insert(order);
         pgassert((to_truck.has_order(order) && to_truck.is_feasable()) || !to_truck.has_order(order));
@@ -357,7 +357,7 @@ Optimize::move_reduce_cost(
              * revert changes
              */
             to_truck.erase(order);
-            this->get_kind() == OneDepot?
+            this->get_kind() == Initials_code::OneDepot?
                 from_truck.semiLIFO(order) :
                 from_truck.insert(order);
         }
@@ -404,7 +404,7 @@ Optimize::move_order(
     /*
      * insert the order
      */
-    this->get_kind() == OneDepot?
+    this->get_kind() == Initials_code::OneDepot?
         to_truck.semiLIFO(order) :
         to_truck.insert(order);
 

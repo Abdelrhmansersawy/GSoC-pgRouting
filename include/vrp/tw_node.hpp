@@ -56,14 +56,14 @@ namespace vrp {
  */
 class Tw_node : public Dnode {
  public:
-     typedef enum {
+     enum class NodeType {
          kStart = 0,  ///< starting site
          kPickup,  ///< pickup site
          kDelivery,  ///< delivery site
          kDump,  ///< dump site, empties truck
          kLoad,  ///< load site, fills the truck
          kEnd        ///< ending site
-     } NodeType;
+     };
 
 
      /** @name accessors */

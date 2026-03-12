@@ -109,17 +109,17 @@ void check_any_numerical_type(const pgrouting::Column_info_t &info) {
 }
 
 /**
- * @brief The function check whether column type is TEXT or not.
- *       Where TEXT is SQL type:
- *             TEXT
+ * @brief The function check whether column type is expectType::TEXT or not.
+ *       Where expectType::TEXT is SQL type:
+ *             expectType::TEXT
  *
  * @param[in] info contain column information.
- * @throw ERROR Unexpected Column type. Expected column type is TEXT.
+ * @throw ERROR Unexpected Column type. Expected column type is expectType::TEXT.
  */
 void
 check_text_type(const pgrouting::Column_info_t &info) {
     if (!(info.type == TEXTOID)) {
-        throw std::string("Unexpected Column '") + info.name + "' type. Expected TEXT";
+        throw std::string("Unexpected Column '") + info.name + "' type. Expected expectType::TEXT";
     }
 }
 
@@ -135,7 +135,7 @@ check_text_type(const pgrouting::Column_info_t &info) {
 void
 check_char_type(const pgrouting::Column_info_t &info) {
     if (!(info.type == BPCHAROID)) {
-        throw std::string("Unexpected Column '") + info.name + "' type. Expected TEXT";
+        throw std::string("Unexpected Column '") + info.name + "' type. Expected expectType::TEXT";
     }
 }
 
@@ -184,19 +184,19 @@ void fetch_column_info(
     for (auto &coldata : info) {
         if (get_column_info(tupdesc, coldata)) {
             switch (coldata.eType) {
-                case ANY_INTEGER:
+                case expectType::ANY_INTEGER:
                     check_any_integer_type(coldata);
                     break;
-                case ANY_NUMERICAL:
+                case expectType::ANY_NUMERICAL:
                     check_any_numerical_type(coldata);
                     break;
-                case TEXT:
+                case expectType::TEXT:
                     check_text_type(coldata);
                     break;
-                case CHAR1:
+                case expectType::CHAR1:
                     check_char_type(coldata);
                     break;
-                case ANY_INTEGER_ARRAY:
+                case expectType::ANY_INTEGER_ARRAY:
                     check_any_integer_array_type(coldata);
                     break;
                 default:

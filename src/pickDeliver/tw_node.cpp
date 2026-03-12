@@ -47,7 +47,7 @@ Tw_node::travel_time_to(const Tw_node &to, double speed) const {
  */
 double
 Tw_node::arrival_j_opens_i(const Tw_node &I, double speed) const {
-    if (m_type == kStart) return (std::numeric_limits<double>::max)();
+    if (m_type == Tw_node::NodeType::kStart) return (std::numeric_limits<double>::max)();
     return I.opens() + I.service_time() + I.travel_time_to(*this, speed);
 }
 
@@ -58,13 +58,13 @@ Tw_node::arrival_j_opens_i(const Tw_node &I, double speed) const {
 bool
 Tw_node::is_compatible_IJ(const Tw_node &I, double speed) const {
     /*
-     * I /->  kStart
+     * I /->  Tw_node::NodeType::kStart
      */
-    if (m_type == kStart) return false;
+    if (m_type == Tw_node::NodeType::kStart) return false;
     /*
-     * kEnd /-> (*this)
+     * Tw_node::NodeType::kEnd /-> (*this)
      */
-    if (I.m_type == kEnd) return false;
+    if (I.m_type == Tw_node::NodeType::kEnd) return false;
 
     return !is_late_arrival(arrival_j_opens_i(I, speed));
 }
@@ -73,12 +73,12 @@ Tw_node::is_compatible_IJ(const Tw_node &I, double speed) const {
 
 std::string Tw_node::type_str() const {
     switch (type()) {
-        case kStart: return "START"; break;
-        case kEnd: return "END"; break;
-        case kDump: return "DUMP"; break;
-        case kLoad: return "LOAD"; break;
-        case kPickup: return "PICKUP"; break;
-        case kDelivery: return "DELIVERY"; break;
+        case Tw_node::NodeType::kStart: return "START"; break;
+        case Tw_node::NodeType::kEnd: return "END"; break;
+        case Tw_node::NodeType::kDump: return "DUMP"; break;
+        case Tw_node::NodeType::kLoad: return "LOAD"; break;
+        case Tw_node::NodeType::kPickup: return "PICKUP"; break;
+        case Tw_node::NodeType::kDelivery: return "DELIVERY"; break;
         default: return "UNKNOWN";
     }
 }
@@ -86,7 +86,7 @@ std::string Tw_node::type_str() const {
 bool
 Tw_node::is_start() const {
     return
-        m_type == kStart
+        m_type == Tw_node::NodeType::kStart
         && (opens() < closes())
         && (service_time() >= 0)
         && (demand() == 0);
@@ -94,7 +94,7 @@ Tw_node::is_start() const {
 
 bool
 Tw_node::is_pickup() const {
-    return m_type == kPickup
+    return m_type == Tw_node::NodeType::kPickup
         && (opens() < closes())
         && (service_time() >= 0)
         && (demand() > 0);
@@ -103,7 +103,7 @@ Tw_node::is_pickup() const {
 
 bool
 Tw_node::is_delivery() const {
-    return m_type == kDelivery
+    return m_type == Tw_node::NodeType::kDelivery
         && (opens() < closes())
         && (service_time() >= 0)
         && (demand() < 0);
@@ -112,7 +112,7 @@ Tw_node::is_delivery() const {
 
 bool
 Tw_node::is_dump() const {
-    return m_type == kDump
+    return m_type == Tw_node::NodeType::kDump
         && (opens() < closes())
         && (service_time() >= 0)
         && (demand() <= 0);
@@ -123,7 +123,7 @@ Tw_node::is_dump() const {
 
 bool
 Tw_node::is_end() const {
-    return m_type == kEnd
+    return m_type == Tw_node::NodeType::kEnd
         && (opens() < closes())
         && (service_time() >= 0)
         && (demand() == 0);
@@ -158,7 +158,7 @@ Tw_node::Tw_node(
     m_service_time(data.pick_service_t),
     m_demand(data.demand),
     m_type(type)  {
-        if (m_type == kDelivery) {
+        if (m_type == Tw_node::NodeType::kDelivery) {
             reset_id(data.deliver_node_id);
             m_opens = data.deliver_open_t;
             m_closes = data.deliver_close_t;
@@ -177,7 +177,7 @@ Tw_node::Tw_node(
     m_service_time(data.start_service_t),
     m_demand(0),
     m_type(type) {
-        if (m_type == kEnd) {
+        if (m_type == Tw_node::NodeType::kEnd) {
             reset_id(data.end_node_id);
             m_opens = data.end_open_t;
             m_closes = data.end_close_t;
